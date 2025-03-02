@@ -1,0 +1,16 @@
+
+version: "3.8"
+
+services:
+  preproprecessing_server:
+    build: ./preproprecessing_server
+    ports:
+      - "8000:8000"
+    container_name: preproprecessing_server
+    restart: unless-stopped
+    # volumes:
+    #   - ./data/raw:/data/raw
+    #   - ./data/processed:/data/processed
+
+# volumes:
+#   db_data:
