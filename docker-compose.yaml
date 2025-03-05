@@ -2,15 +2,46 @@
 version: "3.8"
 
 services:
+  triton:
+    image: 33a797709c5358e1571e95dfd41ec46c1077e685e0864e50f0c328e1af3e69ad
+    container_name: triton
+    ports:
+      - "8000:8000"  # HTTP
+      - "8001:8001"  # gRPC
+      - "8002:8002"  # Metrics
+    volumes:
+      - ./model_repository:/models  # Укажите путь к вашим моделям
+    command: ["tritonserver", "--model-repository=/models"]
   preproprecessing_server:
     build: ./preproprecessing_server
     ports:
-      - "8000:8000"
+      - "8010:8010"
     container_name: preproprecessing_server
     restart: unless-stopped
-    # volumes:
-    #   - ./data/raw:/data/raw
-    #   - ./data/processed:/data/processed
 
-# volumes:
-#   db_data:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - triton
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  
+    depends_on:
+      - prometheus
+
+volumes:
+  grafana-storage:

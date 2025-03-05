@@ -2,3 +2,7 @@ fastapi
 numpy
 pydantic
 uvicorn
+pillow
+requests
+loguru
+python-multipart

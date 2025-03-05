@@ -1,0 +1,17 @@
+name: "model_mnist_quantized"
+platform: "onnxruntime_onnx"
+max_batch_size: 64
+input [
+  {
+    name: "input"
+    data_type: TYPE_FP32
+    dims: [784]
+  }
+]
+output [
+  {
+    name: "output"
+    data_type: TYPE_FP32
+    dims: [10]
+  }
+]
