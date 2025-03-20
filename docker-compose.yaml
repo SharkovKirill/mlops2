@@ -10,7 +10,7 @@ services:
       - "8001:8001"  # gRPC
       - "8002:8002"  # Metrics
     volumes:
-      - ./model_repository:/models  # Укажите путь к вашим моделям
+      - ./model_repository:/models 
     command: ["tritonserver", "--model-repository=/models"]
   preproprecessing_server:
     build: ./preproprecessing_server
